@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #059669;
+            --warning: #fbbf24;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #9ca3af;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Clean sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            background: var(--primary);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-brand i {
+            margin-right: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-content {
+            padding: 1rem 0;
+        }
+
+        /* Nav links */
+        .sidebar .nav-link {
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            margin: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .sidebar .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Header */
+        .top-header {
+            height: 60px;
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.25rem;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+        }
+
+        /* Status badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+            border-radius: 0.25rem;
+        }
+
+        .badge.bg-success {
+            background-color: var(--success) !important;
+        }
+
+        .badge.bg-danger {
+            background-color: var(--danger) !important;
+        }
+
+        .badge.bg-warning {
+            background-color: var(--warning) !important;
+        }
+
+        .badge.bg-primary {
+            background-color: var(--primary) !important;
+        }
+
+        /* Buttons */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        main {
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-hdd-network"></i>
+            <span>KK-OPS 运维平台</span>
+        </div>
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/servers">
+                        <i class="bi bi-server"></i> 服务器管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cicd/pipelines">
+                        <i class="bi bi-diagram-3"></i> CICD管理
+                    </a>
+                </li>
+                {{if eq .role "admin"}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">
+                        <i class="bi bi-people"></i> 用户管理
+                    </a>
+                </li>
+                {{end}}
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-info-circle"></i> 关于系统
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-question-circle"></i> 帮助文档
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-wrapper">
+        <!-- Top header -->
+        <header class="top-header">
+            <div class="container-fluid">
+                <div class="header-content justify-content-end">
+                    <div class="user-info">
+                        <div class="avatar">
+                            {{if .username}}{{slice .username 0 1}}{{else}}U{{end}}
+                        </div>
+                        <span class="me-3">{{.username}}</span>
+                        <a href="/logout" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right"></i> 退出
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <!-- Main content area -->
+                    <main class="main-content">
+                        {{if .error}}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{.error}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {{end}}
+
+                        <!-- Page header -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h1 class="h4 mb-0 text-gray-800">服务器详情</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group me-2">
+                                    <a href="/servers" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-arrow-left"></i> 返回列表
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{if .server}}
+                        <div class="row">
+                            <!-- Server information card -->
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="mb-0">{{.server.Name}}</h5>
+                                            <small class="text-muted">上次更新: {{.server.UpdatedAt.Format "2006-01-02 15:04"}}</small>
+                                        </div>
+                                        <span class="badge {{if eq .server.Status "online"}}bg-success{{else if eq .server.Status "offline"}}bg-danger{{else}}bg-warning{{end}}">
+                                            {{if eq .server.Status "online"}}在线{{else if eq .server.Status "offline"}}离线{{else}}维护中{{end}}
+                                        </span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">服务器名称</div>
+                                                    <div class="detail-value">{{.server.Name}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">状态</div>
+                                                    <div class="detail-value">
+                                                        <span class="badge {{if eq .server.Status "online"}}bg-success{{else if eq .server.Status "offline"}}bg-danger{{else}}bg-warning{{end}}">
+                                                            {{if eq .server.Status "online"}}在线{{else if eq .server.Status "offline"}}离线{{else}}维护中{{end}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">IP地址</div>
+                                                    <div class="detail-value">{{.server.IP}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">SSH端口</div>
+                                                    <div class="detail-value">{{.server.Port}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">用户名</div>
+                                                    <div class="detail-value">{{.server.Username}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">认证方式</div>
+                                                    <div class="detail-value">
+                                                        {{if eq .server.AuthType "password"}}
+                                                        <span><i class="bi bi-key"></i> 密码认证</span>
+                                                        {{else if eq .server.AuthType "key"}}
+                                                        <span><i class="bi bi-file-earmark-lock"></i> SSH密钥认证</span>
+                                                        {{else}}
+                                                        <span>未指定</span>
+                                                        {{end}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{if eq .server.AuthType "key"}}
+                                        <div class="row mb-4">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">SSH密钥路径</div>
+                                                    <div class="detail-value">{{.server.SSHKeyPath}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{end}}
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <div class="detail-label">描述</div>
+                                                    <div class="detail-value">
+                                                        {{if .server.Description}}
+                                                        {{.server.Description}}
+                                                        {{else}}
+                                                        <span class="text-muted">暂无描述</span>
+                                                        {{end}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-end">
+                                        <button class="btn btn-success me-2" id="sshConnectButton">
+                                            <i class="bi bi-terminal"></i> SSH连接
+                                        </button>
+                                        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editServerModal">
+                                            <i class="bi bi-pencil"></i> 编辑
+                                        </button>
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteServerModal">
+                                            <i class="bi bi-trash"></i> 删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick actions card -->
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">快捷操作</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-outline-primary" id="pingServerBtn">
+                                                <i class="bi bi-activity"></i> Ping 测试
+                                            </button>
+                                            <button class="btn btn-outline-primary" id="checkStatusBtn">
+                                                <i class="bi bi-heart-pulse"></i> 检查服务状态
+                                            </button>
+                                            <button class="btn btn-outline-primary" id="diskUsageBtn">
+                                                <i class="bi bi-hdd"></i> 查看磁盘使用
+                                            </button>
+                                            <button class="btn btn-outline-primary" id="systemInfoBtn">
+                                                <i class="bi bi-cpu"></i> 系统信息
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">SSH连接信息</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="detail-label">连接命令</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-sm" id="sshCommand" readonly value="ssh {{.server.Username}}@{{.server.IP}} -p {{.server.Port}}{{if eq .server.AuthType "key"}} -i {{.server.SSHKeyPath}}{{end}}">
+                                                <button class="btn btn-outline-secondary btn-sm" type="button" id="copySshCmd">
+                                                    <i class="bi bi-clipboard"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-info mb-0">
+                                            <i class="bi bi-info-circle me-2"></i>
+                                            点击SSH连接按钮获取更多连接选项和帮助
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{else}}
+                        <div class="alert alert-danger">
+                            {{if .error}}
+                            {{.error}}
+                            {{else}}
+                            未找到服务器信息
+                            {{end}}
+                        </div>
+                        {{end}}
+                    </main>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑服务器模态框 -->
+    <div class="modal fade" id="editServerModal" tabindex="-1" aria-labelledby="editServerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editServerModalLabel">编辑服务器</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editServerForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_name" class="form-label">服务器名称</label>
+                                <input type="text" class="form-control" id="edit_name" name="name" value="{{.server.Name}}" required>
+                                <div class="form-text">为服务器起一个易于识别的名称</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_status" class="form-label">状态</label>
+                                <select class="form-select" id="edit_status" name="status" required>
+                                    <option value="online" {{if eq .server.Status "online"}}selected{{end}}>在线</option>
+                                    <option value="offline" {{if eq .server.Status "offline"}}selected{{end}}>离线</option>
+                                    <option value="maintenance" {{if eq .server.Status "maintenance"}}selected{{end}}>维护中</option>
+                                </select>
+                                <div class="form-text">服务器当前的运行状态</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_ip" class="form-label">IP地址</label>
+                                <input type="text" class="form-control" id="edit_ip" name="ip" value="{{.server.IP}}" required>
+                                <div class="form-text">服务器的IP地址或域名</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_port" class="form-label">SSH端口</label>
+                                <input type="number" class="form-control" id="edit_port" name="port" value="{{.server.Port}}" required>
+                                <div class="form-text">SSH服务的端口号，默认为22</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_username" class="form-label">用户名</label>
+                                <input type="text" class="form-control" id="edit_username" name="username" value="{{.server.Username}}" required>
+                                <div class="form-text">用于SSH连接的用户名</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="edit_auth_type" class="form-label">认证方式</label>
+                                <select class="form-select" id="edit_auth_type" name="auth_type" required>
+                                    <option value="password" {{if eq .server.AuthType "password"}}selected{{end}}>密码认证</option>
+                                    <option value="key" {{if eq .server.AuthType "key"}}selected{{end}}>SSH密钥认证</option>
+                                </select>
+                                <div class="form-text">选择登录服务器的认证方式</div>
+                            </div>
+                        </div>
+
+                        <div id="passwordGroup" class="mb-3" {{if eq .server.AuthType "key"}}style="display:none;"{{end}}>
+                            <label for="edit_password" class="form-label">密码 (留空则不修改)</label>
+                            <input type="password" class="form-control" id="edit_password" name="password">
+                            <div class="form-text">用于密码认证的密码（将加密存储）</div>
+                        </div>
+
+                        <div id="sshKeyPathGroup" class="mb-3" {{if ne .server.AuthType "key"}}style="display:none;"{{end}}>
+                            <label for="edit_ssh_key_path" class="form-label">SSH密钥路径</label>
+                            <input type="text" class="form-control" id="edit_ssh_key_path" name="ssh_key_path"
+                                value="{{.server.SSHKeyPath}}" placeholder="例如: ~/.ssh/id_rsa">
+                            <div class="form-text">SSH密钥的本地路径，使用密钥认证时需要</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_description" class="form-label">描述</label>
+                            <textarea class="form-control" id="edit_description" name="description" rows="3" placeholder="服务器用途、配置等描述信息">{{.server.Description}}</textarea>
+                            <div class="form-text">关于服务器的补充信息，如用途、特殊配置等</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveServerButton">
+                        <i class="bi bi-save"></i> 保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除服务器确认模态框 -->
+    <div class="modal fade" id="deleteServerModal" tabindex="-1" aria-labelledby="deleteServerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteServerModalLabel">确认删除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        此操作不可逆！请谨慎操作。
+                    </div>
+                    <p>您确定要删除服务器 <strong>{{.server.Name}}</strong> 吗？</p>
+                    <p>删除后将无法恢复，所有相关的流水线和任务也可能受到影响。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">
+                        <i class="bi bi-trash"></i> 确认删除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SSH连接模态框 -->
+    <div class="modal fade" id="sshConnectionModal" tabindex="-1" aria-labelledby="sshConnectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sshConnectionModalLabel">
+                        <i class="bi bi-terminal"></i> SSH连接 - {{.server.Name}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="sshTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="connection-tab" data-bs-toggle="tab" data-bs-target="#connection"
+                                type="button" role="tab" aria-controls="connection" aria-selected="true">
+                                连接信息
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="options-tab" data-bs-toggle="tab" data-bs-target="#options"
+                                type="button" role="tab" aria-controls="options" aria-selected="false">
+                                高级选项
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="help-tab" data-bs-toggle="tab" data-bs-target="#help"
+                                type="button" role="tab" aria-controls="help" aria-selected="false">
+                                帮助
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content py-3" id="sshTabContent">
+                        <div class="tab-pane fade show active" id="connection" role="tabpanel" aria-labelledby="connection-tab">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">基本连接信息</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="detail-label">主机地址</div>
+                                            <div class="detail-value fw-bold">{{.server.IP}}</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="detail-label">SSH端口</div>
+                                            <div class="detail-value fw-bold">{{.server.Port}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="detail-label">用户名</div>
+                                            <div class="detail-value fw-bold">{{.server.Username}}</div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="detail-label">认证方式</div>
+                                            <div class="detail-value">
+                                                {{if eq .server.AuthType "password"}}
+                                                <span><i class="bi bi-key"></i> 密码认证</span>
+                                                {{else if eq .server.AuthType "key"}}
+                                                <span><i class="bi bi-file-earmark-lock"></i> SSH密钥认证</span>
+                                                {{else}}
+                                                <span>未指定</span>
+                                                {{end}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{if eq .server.AuthType "key"}}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="detail-label">SSH密钥路径</div>
+                                            <div class="detail-value">{{.server.SSHKeyPath}}</div>
+                                        </div>
+                                    </div>
+                                    {{end}}
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">连接命令</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="alert alert-primary">
+                                        <code id="sshCommandDisplay">
+                                            ssh {{.server.Username}}@{{.server.IP}} -p {{.server.Port}}{{if eq .server.AuthType "key"}} -i {{.server.SSHKeyPath}}{{end}}
+                                        </code>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button class="btn btn-success" id="copySSHCommand">
+                                            <i class="bi bi-clipboard"></i> 复制SSH命令
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="options" role="tabpanel" aria-labelledby="options-tab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">高级SSH选项</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-muted mb-3">您可以添加以下选项到SSH命令中:</p>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="forwardX11">
+                                        <label class="form-check-label" for="forwardX11">
+                                            X11 转发 (-X)
+                                        </label>
+                                        <div class="form-text">启用X11转发，用于运行图形界面程序</div>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="compression">
+                                        <label class="form-check-label" for="compression">
+                                            压缩传输 (-C)
+                                        </label>
+                                        <div class="form-text">启用压缩，提高在慢速网络上的性能</div>
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="verbose">
+                                        <label class="form-check-label" for="verbose">
+                                            详细模式 (-v)
+                                        </label>
+                                        <div class="form-text">输出详细的连接信息，用于调试</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="customOptions" class="form-label">其他选项</label>
+                                        <input type="text" class="form-control" id="customOptions" placeholder="例如: -L 8080:localhost:8080">
+                                        <div class="form-text">添加自定义SSH选项</div>
+                                    </div>
+
+                                    <div class="alert alert-primary">
+                                        <strong>生成的命令:</strong>
+                                        <code id="advancedCommandDisplay">
+                                            ssh {{.server.Username}}@{{.server.IP}} -p {{.server.Port}}{{if eq .server.AuthType "key"}} -i {{.server.SSHKeyPath}}{{end}}
+                                        </code>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button class="btn btn-success" id="copyAdvancedCommand">
+                                            <i class="bi bi-clipboard"></i> 复制高级命令
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="help" role="tabpanel" aria-labelledby="help-tab">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">SSH连接帮助</h6>
+                                </div>
+                                <div class="card-body">
+                                    <h6>如何使用SSH连接:</h6>
+                                    <ol>
+                                        <li>打开终端或命令行</li>
+                                        <li>输入复制的SSH命令</li>
+                                        <li>如果使用密码认证，会提示您输入密码</li>
+                                        <li>如果使用密钥认证，确保密钥文件权限正确（chmod 600）</li>
+                                    </ol>
+
+                                    <h6>常见问题:</h6>
+                                    <ul>
+                                        <li>
+                                            <strong>密钥认证失败:</strong>
+                                            检查密钥文件路径是否正确，权限是否为600
+                                        </li>
+                                        <li>
+                                            <strong>连接被拒绝:</strong>
+                                            检查IP地址和端口是否正确，防火墙是否开放
+                                        </li>
+                                        <li>
+                                            <strong>密码认证失败:</strong>
+                                            确认用户名和密码正确
+                                        </li>
+                                    </ul>
+
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        首次连接到新服务器时，系统会询问是否信任主机密钥，请输入 "yes" 确认。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快捷操作响应模态框 -->
+    <div class="modal fade" id="actionResultModal" tabindex="-1" aria-labelledby="actionResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="actionResultModalLabel">操作结果</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="actionLoading" class="text-center">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p>请稍候，正在执行操作...</p>
+                    </div>
+                    <div id="actionResult" style="display:none;">
+                        <div class="alert alert-info mb-3">
+                            <span id="actionTitle">操作执行完成</span>
+                        </div>
+                        <pre id="resultContent" class="border p-3 bg-light" style="max-height: 300px; overflow-y: auto;"></pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 认证方式切换显示/隐藏SSH密钥路径输入框
+            const authTypeSelect = document.getElementById('edit_auth_type');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const sshKeyPathGroup = document.getElementById('sshKeyPathGroup');
+
+            if (authTypeSelect && sshKeyPathGroup) {
+                authTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'key') {
+                        passwordGroup.style.display = 'none';
+                        sshKeyPathGroup.style.display = 'block';
+                    } else {
+                        passwordGroup.style.display = 'block';
+                        sshKeyPathGroup.style.display = 'none';
+                    }
+                });
+            }
+
+            // SSH连接功能
+            const sshConnectButton = document.getElementById('sshConnectButton');
+            const sshConnectionModal = new bootstrap.Modal(document.getElementById('sshConnectionModal'));
+
+            if (sshConnectButton) {
+                sshConnectButton.addEventListener('click', function() {
+                    // 显示SSH连接模态框
+                    sshConnectionModal.show();
+                });
+            }
+
+            // 复制SSH命令 - 基本
+            const copySSHCommand = document.getElementById('copySSHCommand');
+            if (copySSHCommand) {
+                copySSHCommand.addEventListener('click', function() {
+                    const sshCommand = document.getElementById('sshCommandDisplay').textContent.trim();
+                    navigator.clipboard.writeText(sshCommand).then(function() {
+                        copySSHCommand.innerHTML = '<i class="bi bi-clipboard-check"></i> 已复制!';
+                        setTimeout(function() {
+                            copySSHCommand.innerHTML = '<i class="bi bi-clipboard"></i> 复制SSH命令';
+                        }, 2000);
+                    }).catch(function(err) {
+                        alert('复制失败: ' + err);
+                    });
+                });
+            }
+
+            // 复制小卡片中的SSH命令
+            const copySshCmd = document.getElementById('copySshCmd');
+            if (copySshCmd) {
+                copySshCmd.addEventListener('click', function() {
+                    const sshCommand = document.getElementById('sshCommand').value;
+                    navigator.clipboard.writeText(sshCommand).then(function() {
+                        copySshCmd.innerHTML = '<i class="bi bi-clipboard-check"></i>';
+                        setTimeout(function() {
+                            copySshCmd.innerHTML = '<i class="bi bi-clipboard"></i>';
+                        }, 2000);
+                    }).catch(function(err) {
+                        alert('复制失败: ' + err);
+                    });
+                });
+            }
+
+            // 高级SSH选项处理
+            const forwardX11 = document.getElementById('forwardX11');
+            const compression = document.getElementById('compression');
+            const verbose = document.getElementById('verbose');
+            const customOptions = document.getElementById('customOptions');
+            const advancedCommandDisplay = document.getElementById('advancedCommandDisplay');
+            const copyAdvancedCommand = document.getElementById('copyAdvancedCommand');
+
+            function updateAdvancedCommand() {
+                let baseCommand = `ssh {{.server.Username}}@{{.server.IP}} -p {{.server.Port}}{{if eq .server.AuthType "key"}} -i {{.server.SSHKeyPath}}{{end}}`;
+
+                if (forwardX11 && forwardX11.checked) {
+                    baseCommand += ' -X';
+                }
+
+                if (compression && compression.checked) {
+                    baseCommand += ' -C';
+                }
+
+                if (verbose && verbose.checked) {
+                    baseCommand += ' -v';
+                }
+
+                if (customOptions && customOptions.value.trim()) {
+                    baseCommand += ' ' + customOptions.value.trim();
+                }
+
+                if (advancedCommandDisplay) {
+                    advancedCommandDisplay.textContent = baseCommand;
+                }
+            }
+
+            // 添加事件监听器
+            [forwardX11, compression, verbose].forEach(el => {
+                if (el) {
+                    el.addEventListener('change', updateAdvancedCommand);
+                }
+            });
+
+            if (customOptions) {
+                customOptions.addEventListener('input', updateAdvancedCommand);
+            }
+
+            // 复制高级SSH命令
+            if (copyAdvancedCommand) {
+                copyAdvancedCommand.addEventListener('click', function() {
+                    const advancedCommand = advancedCommandDisplay.textContent.trim();
+                    navigator.clipboard.writeText(advancedCommand).then(function() {
+                        copyAdvancedCommand.innerHTML = '<i class="bi bi-clipboard-check"></i> 已复制!';
+                        setTimeout(function() {
+                            copyAdvancedCommand.innerHTML = '<i class="bi bi-clipboard"></i> 复制高级命令';
+                        }, 2000);
+                    }).catch(function(err) {
+                        alert('复制失败: ' + err);
+                    });
+                });
+            }
+
+            // 处理服务器编辑
+            const saveServerButton = document.getElementById('saveServerButton');
+            if (saveServerButton) {
+                saveServerButton.addEventListener('click', function() {
+                    const form = document.getElementById('editServerForm');
+                    const formData = new FormData(form);
+
+                    fetch('/servers/{{.server.ID}}', {
+                        method: 'PUT',
+                        body: JSON.stringify(Object.fromEntries(formData)),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert('更新失败: ' + data.error);
+                        } else {
+                            alert('服务器更新成功');
+                            window.location.reload();
+                        }
+                    })
+                    .catch(error => {
+                        alert('更新失败: ' + error);
+                    });
+                });
+            }
+
+            // 处理服务器删除
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            if (confirmDeleteButton) {
+                confirmDeleteButton.addEventListener('click', function() {
+                    fetch('/servers/{{.server.ID}}', {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert('删除失败: ' + data.error);
+                        } else {
+                            alert('服务器删除成功');
+                            window.location.href = '/servers';
+                        }
+                    })
+                    .catch(error => {
+                        alert('删除失败: ' + error);
+                    });
+                });
+            }
+
+            // 快捷操作处理
+            const actionResultModal = new bootstrap.Modal(document.getElementById('actionResultModal'));
+            const actionTitles = {
+                'pingServerBtn': 'Ping 测试结果',
+                'checkStatusBtn': '服务状态检查结果',
+                'diskUsageBtn': '磁盘使用情况',
+                'systemInfoBtn': '系统信息'
+            };
+
+            // 模拟响应结果
+            const mockResults = {
+                'pingServerBtn': `PING {{.server.IP}} ({{.server.IP}}): 56 data bytes
+64 bytes from {{.server.IP}}: icmp_seq=0 ttl=64 time=0.854 ms
+64 bytes from {{.server.IP}}: icmp_seq=1 ttl=64 time=0.586 ms
+64 bytes from {{.server.IP}}: icmp_seq=2 ttl=64 time=0.518 ms
+64 bytes from {{.server.IP}}: icmp_seq=3 ttl=64 time=0.654 ms
+
+--- {{.server.IP}} ping statistics ---
+4 packets transmitted, 4 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 0.518/0.653/0.854/0.131 ms`,
+                'checkStatusBtn': `● ssh.service - OpenSSH server daemon
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2025-05-20 12:45:31 CST; 1 day ago
+    Process: 1294 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1336 (sshd)
+      Tasks: 1 (limit: 4915)
+     Memory: 7.1M
+        CPU: 1.302s
+     CGroup: /system.slice/ssh.service
+             └─1336 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2025-05-20 12:45:35 CST; 1 day ago
+    Process: 1295 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 1337 (nginx)
+      Tasks: 5 (limit: 4915)
+     Memory: 8.9M
+        CPU: 1.125s
+     CGroup: /system.slice/nginx.service
+             ├─1337 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+             ├─1338 nginx: worker process
+             ├─1339 nginx: worker process
+             ├─1340 nginx: worker process
+             └─1341 nginx: worker process`,
+                'diskUsageBtn': `Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1        30G   12G   17G  42% /
+tmpfs           1.9G     0  1.9G   0% /dev/shm
+tmpfs           756M  956K  755M   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+/dev/vda15      105M  6.1M   99M   6% /boot/efi
+tmpfs           378M  4.0K  378M   1% /run/user/1000`,
+                'systemInfoBtn': `HOSTNAME: server-{{.server.Name}}
+KERNEL: Linux 5.15.0-1045-azure x86_64
+
+CPU:
+  Model: AMD EPYC 7763 64-Core Processor
+  Architecture: x86_64
+  Cores: 4
+  Threads: 8
+
+MEMORY:
+  Total: 7.64 GiB
+  Free: 2.75 GiB
+  Used: 4.89 GiB
+
+OPERATING SYSTEM:
+  Distribution: Ubuntu 22.04.3 LTS
+  Codename: jammy
+
+NETWORK:
+  IP Address: {{.server.IP}}
+  Hostname: server-{{.server.Name}}
+
+UPTIME:
+  System Up Since: 2025-05-20 12:45:31
+  Uptime: 1 day, 6 hours, 24 minutes`
+            };
+
+            // 为每个快捷操作按钮添加点击事件
+            ['pingServerBtn', 'checkStatusBtn', 'diskUsageBtn', 'systemInfoBtn'].forEach(btnId => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        // 显示模态框和加载指示
+                        document.getElementById('actionLoading').style.display = 'block';
+                        document.getElementById('actionResult').style.display = 'none';
+                        document.getElementById('actionTitle').textContent = actionTitles[btnId];
+                        document.getElementById('resultContent').textContent = '';
+                        actionResultModal.show();
+
+                        // 模拟加载时间后显示结果
+                        setTimeout(() => {
+                            document.getElementById('actionLoading').style.display = 'none';
+                            document.getElementById('actionResult').style.display = 'block';
+                            document.getElementById('resultContent').textContent = mockResults[btnId];
+                        }, 1500);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

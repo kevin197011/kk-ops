@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #059669;
+            --warning: #fbbf24;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #9ca3af;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Clean sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            background: var(--primary);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-brand i {
+            margin-right: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-content {
+            padding: 1rem 0;
+        }
+
+        /* Nav links */
+        .sidebar .nav-link {
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            margin: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .sidebar .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Header */
+        .top-header {
+            height: 60px;
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Form styles */
+        .form-label {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border-color: var(--border);
+            padding: 0.6rem 0.75rem;
+            font-size: 0.95rem;
+            border-radius: 0.375rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem var(--primary-light);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            font-family: monospace;
+        }
+
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-light);
+            border-color: var(--border);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        /* Code editor style */
+        .code-editor-header {
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+        }
+
+        .code-editor {
+            position: relative;
+        }
+
+        .code-editor textarea {
+            padding: 1rem;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            resize: vertical;
+            font-size: 14px;
+            line-height: 1.5;
+            tab-size: 4;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-hdd-network"></i>
+            <span>KK-OPS 运维平台</span>
+        </div>
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/servers">
+                        <i class="bi bi-server"></i> 服务器管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/cicd/pipelines">
+                        <i class="bi bi-diagram-3"></i> CICD管理
+                    </a>
+                </li>
+                {{if eq .role "admin"}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">
+                        <i class="bi bi-people"></i> 用户管理
+                    </a>
+                </li>
+                {{end}}
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-info-circle"></i> 关于系统
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-question-circle"></i> 帮助文档
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-wrapper">
+        <!-- Top header -->
+        <header class="top-header">
+            <div class="container-fluid">
+                <div class="header-content justify-content-end">
+                    <div class="user-info">
+                        <div class="avatar">
+                            {{if .username}}{{slice .username 0 1}}{{else}}U{{end}}
+                        </div>
+                        <span class="me-3">{{.username}}</span>
+                        <a href="/logout" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right"></i> 退出
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            {{if .error}}
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{.error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {{end}}
+
+            <!-- Page header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h4 mb-0 text-gray-800">添加流水线</h1>
+                <a href="/cicd/pipelines" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>返回列表
+                </a>
+            </div>
+
+            <!-- Pipeline form -->
+            <div class="card">
+                <div class="card-body p-4">
+                    <form action="/cicd/pipelines" method="post">
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">流水线名称</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="输入流水线名称" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="git_repo" class="form-label">Git仓库地址</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-git"></i></span>
+                                        <input type="text" class="form-control" id="git_repo" name="git_repo" placeholder="例如: https://github.com/username/repo.git" required>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="branch" class="form-label">分支</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-code-slash"></i></span>
+                                            <input type="text" class="form-control" id="branch" name="branch" value="main" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="server_id" class="form-label">部署服务器</label>
+                                        <select class="form-select" id="server_id" name="server_id" required>
+                                            <option value="">选择服务器</option>
+                                            {{range .servers}}
+                                            <option value="{{.ID}}">{{.Name}} ({{.IP}})</option>
+                                            {{end}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="build_script" class="form-label">构建脚本</label>
+                                    <div class="code-editor">
+                                        <div class="code-editor-header">
+                                            <i class="bi bi-code-square me-1"></i>build.sh
+                                        </div>
+                                        <textarea class="form-control" id="build_script" name="build_script" rows="7" required>#!/bin/bash
+# 在这里编写构建脚本
+echo "Building project..."
+npm install
+npm run build</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="deploy_script" class="form-label">部署脚本</label>
+                                    <div class="code-editor">
+                                        <div class="code-editor-header">
+                                            <i class="bi bi-code-square me-1"></i>deploy.sh
+                                        </div>
+                                        <textarea class="form-control" id="deploy_script" name="deploy_script" rows="7" required>#!/bin/bash
+# 在这里编写部署脚本
+echo "Deploying project..."
+rsync -avz ./dist/ /var/www/html/</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">描述</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="输入流水线描述（可选）"></textarea>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="/cicd/pipelines" class="btn btn-light me-md-2">取消</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-plus-circle me-1"></i>创建流水线
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <div class="card bg-light border-0">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="bi bi-info-circle me-2"></i>帮助信息
+                                        </h5>
+                                        <hr>
+                                        <ul class="ps-3">
+                                            <li class="mb-2">
+                                                <strong>流水线名称</strong>: 为您的流水线指定一个容易识别的名称
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>Git仓库</strong>: 输入完整的Git仓库URL，包括.git后缀
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>分支</strong>: 默认为main，可指定任何有效的分支名
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>构建脚本</strong>: 用于构建您的项目的命令，如npm build或make
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>部署脚本</strong>: 将构建的项目部署到服务器的命令
+                                            </li>
+                                        </ul>
+                                        <div class="alert alert-primary mt-3 mb-0 py-2">
+                                            <i class="bi bi-link-45deg me-1"></i> <a href="#" class="text-decoration-underline">查看详细文档</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

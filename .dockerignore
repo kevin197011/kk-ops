@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Go
+go.work
+
+# Development files
+.env
+*.log
+*.out
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temp files
+tmp/
+temp/
+
+# Binaries
+/bin/
+/kk-ops

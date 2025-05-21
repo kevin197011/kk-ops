@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #059669;
+            --warning: #fbbf24;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #9ca3af;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Clean sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            background: var(--primary);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-brand i {
+            margin-right: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-content {
+            padding: 1rem 0;
+        }
+
+        /* Nav links */
+        .sidebar .nav-link {
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            margin: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .sidebar .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Header */
+        .top-header {
+            height: 60px;
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+
+        /* Stats cards */
+        .stats-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            height: 100%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stats-card .stats-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .stats-card .stats-number {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .stats-card .stats-label {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .bg-blue {
+            background-color: var(--primary);
+        }
+
+        .bg-green {
+            background-color: var(--success);
+        }
+
+        .bg-yellow {
+            background-color: var(--warning);
+        }
+
+        .bg-red {
+            background-color: var(--danger);
+        }
+
+        /* Chart and table cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.25rem;
+        }
+
+        .card-header h6 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .dashboard-card {
+            height: 400px;
+        }
+
+        .dashboard-card .card-body {
+            height: calc(100% - 56px);
+            overflow-y: auto;
+        }
+
+        #pipelineChart {
+            height: 290px !important;
+            margin-top: 5px;
+        }
+
+        #pipelineStatusCard .card-body {
+            overflow-y: hidden;
+        }
+
+        /* Activity chart */
+        .activity-chart-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #activityChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Tables */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-light);
+            border-top: none;
+            font-size: 0.875rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: var(--light);
+        }
+
+        /* Status badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+            border-radius: 0.25rem;
+        }
+
+        .badge.bg-success {
+            background-color: var(--success) !important;
+        }
+
+        .badge.bg-danger {
+            background-color: var(--danger) !important;
+        }
+
+        .badge.bg-primary {
+            background-color: var(--primary) !important;
+        }
+
+        .badge.bg-secondary {
+            background-color: var(--gray) !important;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-hdd-network"></i>
+            <span>KK-OPS 运维平台</span>
+        </div>
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/servers">
+                        <i class="bi bi-server"></i> 服务器管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cicd/pipelines">
+                        <i class="bi bi-diagram-3"></i> CICD管理
+                    </a>
+                </li>
+                {{if eq .role "admin"}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">
+                        <i class="bi bi-people"></i> 用户管理
+                    </a>
+                </li>
+                {{end}}
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-info-circle"></i> 关于系统
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-question-circle"></i> 帮助文档
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-wrapper">
+        <!-- Top header -->
+        <header class="top-header">
+            <div class="container-fluid">
+                <div class="header-content justify-content-end">
+                    <div class="user-info">
+                        <div class="avatar">
+                            {{if .username}}{{slice .username 0 1}}{{else}}U{{end}}
+                        </div>
+                        <span class="me-3">{{.username}}</span>
+                        <a href="/logout" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right"></i> 退出
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            {{if .error}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{.error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {{end}}
+
+            <!-- Page title -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h4 mb-0 text-gray-800">仪表盘概览</h1>
+                <button type="button" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-arrow-repeat me-1"></i>刷新数据
+                </button>
+            </div>
+
+            <!-- Stats cards -->
+            <div class="row stats-row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-blue">
+                            <i class="bi bi-server"></i>
+                        </div>
+                        <div class="stats-number">{{ .stats.ServerCount }}</div>
+                        <div class="stats-label">服务器总数</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-green">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div class="stats-number">{{ .stats.OnlineServerCount }}</div>
+                        <div class="stats-label">在线服务器</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-yellow">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                        <div class="stats-number">{{ .stats.PipelineCount }}</div>
+                        <div class="stats-label">流水线总数</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="stats-card">
+                        <div class="stats-icon bg-red">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="stats-number">{{ .stats.UserCount }}</div>
+                        <div class="stats-label">用户总数</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Tables Row -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card" id="pipelineStatusCard">
+                        <div class="card-header">
+                            <h6><i class="bi bi-pie-chart me-2"></i>流水线状态分布</h6>
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <div id="chartDataContainer"
+                                data-success="{{ .stats.PipelineSuccessCount }}"
+                                data-failed="{{ .stats.PipelineFailedCount }}"
+                                data-pending="{{ .stats.PipelinePendingCount }}">
+                            </div>
+                            <canvas id="pipelineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h6><i class="bi bi-clock-history me-2"></i>最近流水线运行</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>流水线</th>
+                                            <th>状态</th>
+                                            <th>触发用户</th>
+                                            <th>开始时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{range .recentRuns}}
+                                        <tr>
+                                            <td><a href="/cicd/pipelines/{{.PipelineID}}">{{.PipelineName}}</a></td>
+                                            <td>
+                                                {{if eq .Status "success"}}
+                                                <span class="badge bg-success">成功</span>
+                                                {{else if eq .Status "failed"}}
+                                                <span class="badge bg-danger">失败</span>
+                                                {{else if eq .Status "running"}}
+                                                <span class="badge bg-primary">运行中</span>
+                                                {{else}}
+                                                <span class="badge bg-secondary">等待中</span>
+                                                {{end}}
+                                            </td>
+                                            <td>{{.UserName}}</td>
+                                            <td>{{.StartTime.Format "01-02 15:04"}}</td>
+                                        </tr>
+                                        {{else}}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4 text-muted">暂无流水线运行记录</td>
+                                        </tr>
+                                        {{end}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Trend Chart Row -->
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            <h6><i class="bi bi-graph-up me-2"></i>最近活动记录趋势</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="activityDataContainer"
+                                data-dates='["01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07"]'
+                                data-logins='[5, 8, 12, 7, 10, 15, 9]'
+                                data-deploys='[2, 3, 5, 1, 4, 6, 3]'
+                                data-pipelines='[1, 4, 2, 3, 5, 2, 4]'>
+                            </div>
+                            <div class="activity-chart-container">
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add row with activity trend chart below the existing chart row -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var dataContainer = document.getElementById('chartDataContainer');
+            var successCount = parseInt(dataContainer.getAttribute('data-success') || 0);
+            var failedCount = parseInt(dataContainer.getAttribute('data-failed') || 0);
+            var pendingCount = parseInt(dataContainer.getAttribute('data-pending') || 0);
+
+            var ctx = document.getElementById('pipelineChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['成功', '失败', '等待/运行中'],
+                    datasets: [{
+                        data: [successCount, failedCount, pendingCount],
+                        backgroundColor: [
+                            '#059669',
+                            '#dc2626',
+                            '#2563eb'
+                        ],
+                        borderColor: [
+                            '#059669',
+                            '#dc2626',
+                            '#2563eb'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 75,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                            fontSize: 14,
+                            fontStyle: 'bold',
+                            fontColor: '#000000',
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltips: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        titleFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                        titleFontSize: 16,
+                        titleFontStyle: 'bold',
+                        titleFontColor: '#ffffff',
+                        titleMarginBottom: 8,
+                        bodyFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                        bodyFontSize: 14,
+                        bodyFontStyle: 'bold',
+                        bodyFontColor: '#ffffff',
+                        bodySpacing: 6,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: true,
+                        caretSize: 8,
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 1000
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取活动趋势图数据
+            var activityContainer = document.getElementById('activityDataContainer');
+            var dates = JSON.parse(activityContainer.getAttribute('data-dates') || '[]');
+            var logins = JSON.parse(activityContainer.getAttribute('data-logins') || '[]');
+            var deploys = JSON.parse(activityContainer.getAttribute('data-deploys') || '[]');
+            var pipelines = JSON.parse(activityContainer.getAttribute('data-pipelines') || '[]');
+
+            // 创建活动趋势图
+            var activityCtx = document.getElementById('activityChart').getContext('2d');
+            var activityChart = new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: '登录活动',
+                            data: logins,
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8,
+                            pointHoverBackgroundColor: '#ffffff',
+                            pointHoverBorderColor: '#2563eb',
+                            pointHoverBorderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: '部署活动',
+                            data: deploys,
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.15)',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#059669',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8,
+                            pointHoverBackgroundColor: '#ffffff',
+                            pointHoverBorderColor: '#059669',
+                            pointHoverBorderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: '流水线运行',
+                            data: pipelines,
+                            borderColor: '#dc2626',
+                            backgroundColor: 'rgba(220, 38, 38, 0.15)',
+                            borderWidth: 3,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#dc2626',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 8,
+                            pointHoverBackgroundColor: '#ffffff',
+                            pointHoverBorderColor: '#dc2626',
+                            pointHoverBorderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                        position: 'top',
+                        align: 'center',
+                        labels: {
+                            fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                            fontSize: 14,
+                            fontStyle: 'bold',
+                            fontColor: '#000000',
+                            padding: 15,
+                            usePointStyle: true,
+                            boxWidth: 10
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false,
+                                drawBorder: true,
+                                color: '#e5e7eb'
+                            },
+                            ticks: {
+                                fontColor: '#000000',
+                                fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                                fontSize: 13,
+                                fontStyle: 'bold',
+                                maxRotation: 0,
+                                autoSkipPadding: 25,
+                                padding: 10
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                color: '#e5e7eb',
+                                drawBorder: true,
+                                zeroLineColor: '#9ca3af',
+                                zeroLineWidth: 2
+                            },
+                            ticks: {
+                                fontColor: '#000000',
+                                fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                                fontSize: 13,
+                                fontStyle: 'bold',
+                                maxTicksLimit: 6,
+                                padding: 10,
+                                beginAtZero: true,
+                                autoSkip: true,
+                                callback: function(value) {
+                                    return value + ' 次';
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        enabled: true,
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        titleFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                        titleFontSize: 16,
+                        titleFontStyle: 'bold',
+                        titleFontColor: '#ffffff',
+                        titleMarginBottom: 10,
+                        bodyFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
+                        bodyFontSize: 14,
+                        bodyFontStyle: 'bold',
+                        bodyFontColor: '#ffffff',
+                        bodySpacing: 6,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: true,
+                        intersect: false,
+                        mode: 'index',
+                        caretSize: 8,
+                        cornerRadius: 6,
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.yLabel + ' 次';
+                                return label;
+                            },
+                            title: function(tooltipItems, data) {
+                                return '日期: ' + tooltipItems[0].xLabel;
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.4
+                        }
+                    },
+                    hover: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #059669;
+            --warning: #fbbf24;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #9ca3af;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Clean sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            background: var(--primary);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-brand i {
+            margin-right: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-content {
+            padding: 1rem 0;
+        }
+
+        /* Nav links */
+        .sidebar .nav-link {
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            margin: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .sidebar .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Header */
+        .top-header {
+            height: 60px;
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Form styles */
+        .form-label {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border-color: var(--border);
+            padding: 0.6rem 0.75rem;
+            font-size: 0.95rem;
+            border-radius: 0.375rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem var(--primary-light);
+        }
+
+        .invalid-feedback {
+            display: none;
+            font-size: 0.85rem;
+            color: var(--danger);
+        }
+
+        .is-invalid {
+            border-color: var(--danger);
+        }
+
+        .is-invalid:focus {
+            box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        }
+
+        /* Input groups with icon styling */
+        .input-group-text {
+            background-color: var(--light);
+            border-color: var(--border);
+            color: var(--text-light);
+        }
+
+        /* Password strength meter */
+        .password-strength-meter {
+            height: 5px;
+            background-color: #e5e7eb;
+            margin-top: 0.5rem;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .password-strength-meter .strength-value {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .password-strength-meter .strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            color: var(--text-light);
+        }
+
+        .strength-weak { background-color: var(--danger); }
+        .strength-fair { background-color: var(--warning); }
+        .strength-good { background-color: var(--primary); }
+        .strength-strong { background-color: var(--success); }
+
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-light);
+            border-color: var(--border);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                position: fixed;
+                z-index: 1000;
+                width: 250px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-hdd-network"></i>
+            <span>KK-OPS 运维平台</span>
+        </div>
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/servers">
+                        <i class="bi bi-server"></i> 服务器管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cicd/pipelines">
+                        <i class="bi bi-diagram-3"></i> CICD管理
+                    </a>
+                </li>
+                {{if eq .role "admin"}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">
+                        <i class="bi bi-people"></i> 用户管理
+                    </a>
+                </li>
+                {{end}}
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-info-circle"></i> 关于系统
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-question-circle"></i> 帮助文档
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-wrapper">
+        <!-- Top header -->
+        <header class="top-header">
+            <div class="container-fluid">
+                <div class="header-content">
+                    <div class="menu-toggle">
+                        <i class="bi bi-list"></i>
+                    </div>
+                    <div class="ms-auto user-info">
+                        <div class="avatar">
+                            {{if .username}}{{slice .username 0 1}}{{else}}U{{end}}
+                        </div>
+                        <span class="me-3">{{.username}}</span>
+                        <a href="/logout" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right"></i> 退出
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            {{if .error}}
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{.error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {{end}}
+
+            <!-- Page header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h4 mb-0 text-gray-800">添加服务器</h1>
+                <a href="/servers" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>返回列表
+                </a>
+            </div>
+
+            <!-- Server form -->
+            <div class="card">
+                <div class="card-body p-4">
+                    <form action="/servers" method="post" id="serverForm" class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">服务器名称</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="bi bi-tag"></i></span>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="输入服务器名称" required>
+                                        <div class="invalid-feedback">请输入服务器名称</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="ip" class="form-label">IP地址</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                            <input type="text" class="form-control" id="ip" name="ip" placeholder="例如: 192.168.1.100" required pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$">
+                                            <div class="invalid-feedback">请输入有效的IP地址</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="port" class="form-label">SSH端口</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-hdd-network"></i></span>
+                                            <input type="number" class="form-control" id="port" name="port" value="22" min="1" max="65535" required>
+                                            <div class="invalid-feedback">端口号必须在1-65535之间</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="username" class="form-label">用户名</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                            <input type="text" class="form-control" id="username" name="username" required>
+                                            <div class="invalid-feedback">请输入用户名</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="status" class="form-label">状态</label>
+                                        <select class="form-select" id="status" name="status" required>
+                                            <option value="online">在线</option>
+                                            <option value="maintenance">维护中</option>
+                                            <option value="offline">离线</option>
+                                        </select>
+                                        <div class="invalid-feedback">请选择服务器状态</div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="auth_type" class="form-label">认证方式</label>
+                                    <select class="form-select" id="auth_type" name="auth_type" required>
+                                        <option value="password" selected>密码认证</option>
+                                        <option value="key">SSH密钥认证</option>
+                                    </select>
+                                    <div class="invalid-feedback">请选择认证方式</div>
+                                </div>
+
+                                <div id="passwordGroup" class="mb-3">
+                                    <label for="password" class="form-label">密码</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <div class="invalid-feedback">请输入密码</div>
+                                    </div>
+                                    <div class="password-strength-meter mt-2">
+                                        <div class="strength-value"></div>
+                                    </div>
+                                    <div class="strength-text"></div>
+                                    <div class="form-text">用于密码认证的密码（将加密存储）</div>
+                                </div>
+
+                                <div id="sshKeyPathGroup" class="mb-3" style="display:none;">
+                                    <label for="ssh_key_path" class="form-label">SSH密钥路径</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="bi bi-file-lock"></i></span>
+                                        <input type="text" class="form-control" id="ssh_key_path" name="ssh_key_path" placeholder="例如: ~/.ssh/id_rsa">
+                                        <div class="invalid-feedback">请输入SSH密钥路径</div>
+                                    </div>
+                                    <div class="form-text">SSH密钥的本地路径，使用密钥认证时需要</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">描述</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="服务器用途、配置等描述信息"></textarea>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <a href="/servers" class="btn btn-light me-md-2">取消</a>
+                                    <button type="button" id="testConnectionBtn" class="btn btn-success me-md-2">
+                                        <i class="bi bi-shield-check"></i> 测试连接
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save"></i> 保存服务器
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <div class="card bg-light border-0">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="bi bi-info-circle me-2"></i>帮助信息
+                                        </h5>
+                                        <hr>
+                                        <ul class="ps-3">
+                                            <li class="mb-2">
+                                                <strong>服务器名称</strong>: 为服务器指定一个易于识别的名称
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>IP地址</strong>: 服务器的IP地址，格式为xxx.xxx.xxx.xxx
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>SSH端口</strong>: SSH服务的端口号，默认为22
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>认证方式</strong>: 选择登录服务器的认证方式
+                                                <ul class="mt-1">
+                                                    <li><small>密码认证: 使用用户名和密码登录</small></li>
+                                                    <li><small>密钥认证: 使用SSH密钥对登录，更安全</small></li>
+                                                </ul>
+                                            </li>
+                                            <li class="mb-2">
+                                                <strong>状态</strong>: 表示服务器当前的可用状态
+                                                <ul class="mt-1">
+                                                    <li><small>在线: 服务器可用</small></li>
+                                                    <li><small>维护中: 服务器正在维护</small></li>
+                                                    <li><small>离线: 服务器暂时不可用</small></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <div class="alert alert-primary mt-3 mb-0 py-2">
+                                            <i class="bi bi-link-45deg me-1"></i> <a href="#" class="text-decoration-underline">查看详细文档</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Connection test modal -->
+    <div class="modal fade" id="connectionTestModal" tabindex="-1" aria-labelledby="connectionTestModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="connectionTestModalLabel">SSH连接测试</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center" id="testingIndicator">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">加载中...</span>
+                        </div>
+                        <p>正在测试SSH连接，请稍候...</p>
+                    </div>
+                    <div id="testResultSuccess" class="alert alert-success" style="display:none;">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <span>连接成功！服务器可以正常连接。</span>
+                    </div>
+                    <div id="testResultError" class="alert alert-danger" style="display:none;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span id="errorMessage">连接失败，请检查连接信息。</span>
+                    </div>
+                    <div id="connectionDetails" class="mt-3" style="display:none;">
+                        <h6>连接信息</h6>
+                        <div class="mb-2 small">
+                            <strong>主机:</strong> <span id="hostInfo"></span>
+                        </div>
+                        <div class="mb-2 small">
+                            <strong>端口:</strong> <span id="portInfo"></span>
+                        </div>
+                        <div class="mb-2 small">
+                            <strong>用户名:</strong> <span id="usernameInfo"></span>
+                        </div>
+                        <div class="mb-2 small">
+                            <strong>认证方式:</strong> <span id="authTypeInfo"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 表单验证
+            const form = document.getElementById('serverForm');
+
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+
+            // IP地址验证增强
+            const ipInput = document.getElementById('ip');
+
+            ipInput.addEventListener('input', function() {
+                const value = this.value;
+                const ipPattern = /^([0-9]{1,3}\.){3}[0-9]{1,3}$/;
+
+                if (ipPattern.test(value)) {
+                    // 验证IP地址范围
+                    const parts = value.split('.');
+                    let valid = true;
+
+                    for (const part of parts) {
+                        const num = parseInt(part);
+                        if (num < 0 || num > 255) {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (valid) {
+                        this.setCustomValidity('');
+                    } else {
+                        this.setCustomValidity('IP地址格式无效，每段必须在0-255之间');
+                    }
+                } else {
+                    this.setCustomValidity('IP地址格式无效，应为xxx.xxx.xxx.xxx');
+                }
+            });
+
+            // 密码强度检测
+            const passwordInput = document.getElementById('password');
+            const strengthValue = document.querySelector('.strength-value');
+            const strengthText = document.querySelector('.strength-text');
+
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                let feedback = '';
+
+                if (password.length > 0) {
+                    // 长度检查
+                    if (password.length >= 8) strength += 25;
+
+                    // 包含小写字母
+                    if (/[a-z]/.test(password)) strength += 15;
+
+                    // 包含大写字母
+                    if (/[A-Z]/.test(password)) strength += 15;
+
+                    // 包含数字
+                    if (/[0-9]/.test(password)) strength += 15;
+
+                    // 包含特殊字符
+                    if (/[^a-zA-Z0-9]/.test(password)) strength += 30;
+
+                    // 设置强度值和文本
+                    strengthValue.style.width = `${strength}%`;
+
+                    if (strength < 30) {
+                        strengthValue.className = 'strength-value strength-weak';
+                        feedback = '弱: 请使用更复杂的密码';
+                    } else if (strength < 60) {
+                        strengthValue.className = 'strength-value strength-fair';
+                        feedback = '一般: 建议增加字符类型';
+                    } else if (strength < 80) {
+                        strengthValue.className = 'strength-value strength-good';
+                        feedback = '良好: 密码安全性不错';
+                    } else {
+                        strengthValue.className = 'strength-value strength-strong';
+                        feedback = '强: 密码非常安全';
+                    }
+                } else {
+                    strengthValue.style.width = '0';
+                    strengthValue.className = 'strength-value';
+                    feedback = '';
+                }
+
+                strengthText.textContent = feedback;
+            });
+
+            // 密码显示切换
+            const togglePasswordBtn = document.getElementById('togglePassword');
+
+            togglePasswordBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // 切换图标
+                const icon = this.querySelector('i');
+                if (type === 'password') {
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                } else {
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                }
+            });
+
+            // 认证方式切换逻辑
+            const authTypeSelect = document.getElementById('auth_type');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const sshKeyPathGroup = document.getElementById('sshKeyPathGroup');
+            const sshKeyPathInput = document.getElementById('ssh_key_path');
+
+            authTypeSelect.addEventListener('change', function() {
+                if (this.value === 'password') {
+                    passwordGroup.style.display = 'block';
+                    sshKeyPathGroup.style.display = 'none';
+                    passwordInput.setAttribute('required', '');
+                    sshKeyPathInput.removeAttribute('required');
+                } else {
+                    passwordGroup.style.display = 'none';
+                    sshKeyPathGroup.style.display = 'block';
+                    passwordInput.removeAttribute('required');
+                    sshKeyPathInput.setAttribute('required', '');
+                }
+            });
+
+            // 测试连接按钮
+            const testConnectionBtn = document.getElementById('testConnectionBtn');
+            const connectionTestModal = new bootstrap.Modal(document.getElementById('connectionTestModal'));
+            const testingIndicator = document.getElementById('testingIndicator');
+            const testResultSuccess = document.getElementById('testResultSuccess');
+            const testResultError = document.getElementById('testResultError');
+            const errorMessage = document.getElementById('errorMessage');
+            const connectionDetails = document.getElementById('connectionDetails');
+
+            testConnectionBtn.addEventListener('click', function() {
+                // 验证表单
+                let formValid = true;
+
+                // 基本字段验证
+                const ip = document.getElementById('ip').value;
+                const ipPattern = /^([0-9]{1,3}\.){3}[0-9]{1,3}$/;
+                const port = document.getElementById('port').value;
+                const username = document.getElementById('username').value;
+                const authType = document.getElementById('auth_type').value;
+                const password = document.getElementById('password').value;
+                const sshKeyPath = document.getElementById('ssh_key_path').value;
+
+                if (!ip || !ipPattern.test(ip) || !port || !username) {
+                    alert('请先填写完整的基本连接信息（IP、端口、用户名）');
+                    return;
+                }
+
+                if (authType === 'password' && !password) {
+                    alert('请输入密码');
+                    return;
+                }
+
+                if (authType === 'key' && !sshKeyPath) {
+                    alert('请输入SSH密钥路径');
+                    return;
+                }
+
+                // 显示模态框
+                connectionTestModal.show();
+
+                // 重置模态框状态
+                testingIndicator.style.display = 'block';
+                testResultSuccess.style.display = 'none';
+                testResultError.style.display = 'none';
+                connectionDetails.style.display = 'none';
+
+                // 展示连接信息
+                document.getElementById('hostInfo').textContent = ip;
+                document.getElementById('portInfo').textContent = port;
+                document.getElementById('usernameInfo').textContent = username;
+                document.getElementById('authTypeInfo').textContent = authType === 'password' ? '密码认证' : 'SSH密钥认证';
+
+                // 发送请求到后端测试连接
+                // 注意：实际实现应该调用后端API，这里仅做模拟
+                setTimeout(function() {
+                    testingIndicator.style.display = 'none';
+                    connectionDetails.style.display = 'block';
+
+                    // 模拟测试结果 - 实际应根据后端返回决定
+                    const parts = ip.split('.');
+                    let valid = true;
+
+                    for (const part of parts) {
+                        const num = parseInt(part);
+                        if (num < 0 || num > 255) {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    if (valid && port >= 1 && port <= 65535 &&
+                        username && (authType === 'password' ? password : sshKeyPath)) {
+                        testResultSuccess.style.display = 'block';
+                    } else {
+                        testResultError.style.display = 'block';
+                        errorMessage.textContent = '连接失败，请检查连接信息是否正确。';
+                    }
+                }, 1500);
+            });
+
+            // 响应式侧边栏处理
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+
+                // 点击其他区域关闭侧边栏
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && window.innerWidth <= 768) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

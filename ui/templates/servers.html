@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #059669;
+            --warning: #fbbf24;
+            --danger: #dc2626;
+            --dark: #111827;
+            --gray: #9ca3af;
+            --light: #f9fafb;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Clean sidebar */
+        .sidebar {
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            background: var(--primary);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-brand i {
+            margin-right: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-content {
+            padding: 1rem 0;
+        }
+
+        /* Nav links */
+        .sidebar .nav-link {
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            margin: 0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.75rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .sidebar .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Header */
+        .top-header {
+            height: 60px;
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Tables */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: var(--text-light);
+            border-top: none;
+            font-size: 0.875rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: var(--light);
+        }
+
+        /* Status badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+            border-radius: 0.25rem;
+        }
+
+        .badge.bg-success {
+            background-color: var(--success) !important;
+        }
+
+        .badge.bg-danger {
+            background-color: var(--danger) !important;
+        }
+
+        .badge.bg-primary {
+            background-color: var(--primary) !important;
+        }
+
+        .badge.bg-secondary {
+            background-color: var(--gray) !important;
+        }
+
+        .badge.bg-warning {
+            background-color: var(--warning) !important;
+        }
+
+        /* Buttons */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-text {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-hdd-network"></i>
+            <span>KK-OPS 运维平台</span>
+        </div>
+        <div class="sidebar-content">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="bi bi-speedometer2"></i> 仪表盘
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/servers">
+                        <i class="bi bi-server"></i> 服务器管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cicd/pipelines">
+                        <i class="bi bi-diagram-3"></i> CICD管理
+                    </a>
+                </li>
+                {{if eq .role "admin"}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">
+                        <i class="bi bi-people"></i> 用户管理
+                    </a>
+                </li>
+                {{end}}
+                <li class="nav-item mt-4">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-info-circle"></i> 关于系统
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="bi bi-question-circle"></i> 帮助文档
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-wrapper">
+        <!-- Top header -->
+        <header class="top-header">
+            <div class="container-fluid">
+                <div class="header-content justify-content-end">
+                    <div class="user-info">
+                        <div class="avatar">
+                            {{if .username}}{{slice .username 0 1}}{{else}}U{{end}}
+                        </div>
+                        <span class="me-3">{{.username}}</span>
+                        <a href="/logout" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right"></i> 退出
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="main-content">
+            {{if .error}}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{.error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {{end}}
+
+            <!-- Page header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h4 mb-0 text-gray-800">服务器管理</h1>
+                <a href="/servers/new" class="btn btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i>添加服务器
+                </a>
+            </div>
+
+            <!-- Server list -->
+            <div class="card">
+                <div class="card-body p-0">
+                    {{if .servers}}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>名称</th>
+                                    <th>IP地址</th>
+                                    <th>端口</th>
+                                    <th>状态</th>
+                                    <th class="text-end">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range .servers}}
+                                <tr>
+                                    <td>{{.ID}}</td>
+                                    <td><a href="/servers/{{.ID}}">{{.Name}}</a></td>
+                                    <td>{{.IP}}</td>
+                                    <td>{{.Port}}</td>
+                                    <td>
+                                        {{if eq .Status "online"}}
+                                        <span class="badge bg-success">在线</span>
+                                        {{else if eq .Status "offline"}}
+                                        <span class="badge bg-danger">离线</span>
+                                        {{else if eq .Status "maintenance"}}
+                                        <span class="badge bg-warning">维护中</span>
+                                        {{else}}
+                                        <span class="badge bg-secondary">{{.Status}}</span>
+                                        {{end}}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="/servers/{{.ID}}" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-danger delete-server" data-id="{{.ID}}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{else}}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="bi bi-server"></i>
+                        </div>
+                        <h4>暂无服务器</h4>
+                        <p class="empty-state-text">
+                            您还没有添加任何服务器，点击下方按钮添加第一台服务器。
+                        </p>
+                        <a href="/servers/new" class="btn btn-primary">
+                            <i class="bi bi-plus-lg me-1"></i>添加服务器
+                        </a>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 服务器删除功能
+            document.querySelectorAll('.delete-server').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serverId = this.getAttribute('data-id');
+                    if (confirm('确定要删除此服务器吗？此操作不可撤销！')) {
+                        fetch(`/servers/${serverId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message) {
+                                alert(data.message);
+                                window.location.reload();
+                            } else {
+                                alert('删除失败: ' + (data.error || '未知错误'));
+                            }
+                        })
+                        .catch(error => {
+                            alert('删除失败: ' + error);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
