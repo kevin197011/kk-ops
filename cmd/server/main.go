@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"os"
 	"os/signal"
@@ -35,6 +36,11 @@ func main() {
 
 	// 创建Gin实例
 	r := gin.Default()
+
+	// 设置模板函数
+	r.SetFuncMap(template.FuncMap{
+		"subtract": func(a, b int) int { return a - b },
+	})
 
 	// 加载静态文件
 	r.Static("/static/css", "./ui/static/css")

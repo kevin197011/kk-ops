@@ -17,10 +17,31 @@ type DashboardStats struct {
 	OnlineServerCount    int       `json:"online_server_count"`
 	PipelineCount        int       `json:"pipeline_count"`
 	PipelineSuccessCount int       `json:"pipeline_success_count"`
-	PipelinePendingCount int       `json:"pipeline_pending_count"`
 	PipelineFailedCount  int       `json:"pipeline_failed_count"`
+	PipelinePendingCount int       `json:"pipeline_pending_count"`
 	UserCount            int       `json:"user_count"`
 	LastUpdated          time.Time `json:"last_updated"`
+}
+
+// PipelineRunInfo 流水线运行信息
+type PipelineRunInfo struct {
+	RunID        int       `json:"run_id"`
+	PipelineID   int       `json:"pipeline_id"`
+	PipelineName string    `json:"pipeline_name"`
+	Status       string    `json:"status"`
+	StartTime    time.Time `json:"start_time"`
+	EndTime      time.Time `json:"end_time"`
+	UserName     string    `json:"user_name"`
+}
+
+// PipelineRun 表示一次流水线运行记录
+type PipelineRun struct {
+	PipelineID   int       `json:"pipeline_id"`
+	PipelineName string    `json:"pipeline_name"`
+	Status       string    `json:"status"`
+	UserID       int       `json:"user_id"`
+	UserName     string    `json:"user_name"`
+	StartTime    time.Time `json:"start_time"`
 }
 
 // DashboardHandler 显示仪表盘页面
@@ -147,17 +168,6 @@ func getStats() (*DashboardStats, error) {
 	}
 
 	return stats, nil
-}
-
-// PipelineRunInfo 流水线运行信息
-type PipelineRunInfo struct {
-	RunID        int       `json:"run_id"`
-	PipelineID   int       `json:"pipeline_id"`
-	PipelineName string    `json:"pipeline_name"`
-	Status       string    `json:"status"`
-	StartTime    time.Time `json:"start_time"`
-	EndTime      time.Time `json:"end_time"`
-	UserName     string    `json:"user_name"`
 }
 
 // getRecentPipelineRuns 获取最近的流水线运行记录
