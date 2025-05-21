@@ -51,6 +51,8 @@ createdb cmdb
 
 # 执行SQL迁移
 psql -d cmdb -f migrations/001_init_schema.sql
+psql -d cmdb -f migrations/002_add_ssh_auth.sql
+psql -d cmdb -f migrations/003_add_user_last_login.sql
 ```
 
 #### 4. 启动应用
@@ -73,7 +75,25 @@ docker-compose up -d
 docker-compose logs -f
 ```
 
-应用将在 http://localhost:8080 运行，PostgreSQL数据库会自动初始化
+应用将在 http://localhost:8080 运行，PostgreSQL数据库会自动初始化，并且migrations目录下的所有SQL迁移文件会按照文件名顺序自动执行。
+
+## 数据库迁移
+
+### 自动迁移机制
+
+系统支持自动执行数据库迁移脚本：
+
+1. Docker环境下，应用启动时会自动执行`migrations`目录中的所有`.sql`文件
+2. 迁移文件按照名称顺序执行（例如：001_xxx.sql, 002_xxx.sql）
+3. 可以通过添加新的编号SQL文件来扩展数据库结构
+
+### 添加新的迁移
+
+添加新的迁移步骤：
+
+1. 在`migrations`目录创建新的SQL文件，文件名格式：`XXX_描述.sql`（XXX为数字序号）
+2. 编写SQL迁移脚本
+3. 重启应用或重新部署Docker容器时，新的迁移将自动执行
 
 ## 数据初始化
 
@@ -112,6 +132,8 @@ kk-ops/
 │   └── templates/         # HTML模板
 ├── migrations/            # 数据库迁移脚本
 ├── scripts/               # 工具脚本
+│   ├── db_init.sh         # 数据库初始化脚本
+│   └── docker-entrypoint.sh # Docker入口点脚本
 ├── Dockerfile             # Docker镜像构建文件
 ├── docker-compose.yml     # Docker Compose配置
 ├── .dockerignore          # Docker忽略文件

@@ -8,7 +8,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - SERVER_PORT=8080
       - DB_HOST=db
@@ -21,6 +22,7 @@ services:
       - kk-ops-network
     volumes:
       - ./migrations:/app/migrations
+      - ./scripts:/app/scripts
 
   db:
     image: postgres:15-alpine
@@ -36,6 +38,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - kk-ops-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d cmdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   kk-ops-network:

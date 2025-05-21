@@ -301,6 +301,32 @@
             text-decoration: none;
             color: var(--primary);
         }
+
+        /* 增强图表可读性 */
+        .activity-chart-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-top: 15px;
+        }
+
+        .card-header h6 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* 确保图表标签文字清晰可见 */
+        #activityChart {
+            font-weight: bold !important;
+        }
+
+        .card-header h6.chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            letter-spacing: 0.5px;
+            padding: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -497,7 +523,7 @@
                 <div class="col-12 mb-4">
                     <div class="card dashboard-card">
                         <div class="card-header">
-                            <h6><i class="bi bi-graph-up me-2"></i>最近活动记录趋势</h6>
+                            <h6 class="chart-title"><i class="bi bi-graph-up me-2"></i>最近活动记录趋势</h6>
                         </div>
                         <div class="card-body">
                             <div id="activityDataContainer"
@@ -506,7 +532,7 @@
                                 data-deploys='[2, 3, 5, 1, 4, 6, 3]'
                                 data-pipelines='[1, 4, 2, 3, 5, 2, 4]'>
                             </div>
-                            <div class="activity-chart-container">
+                            <div class="activity-chart-container" style="height: 400px; padding: 10px 5px;">
                                 <canvas id="activityChart"></canvas>
                             </div>
                         </div>
@@ -610,12 +636,12 @@
                             data: logins,
                             borderColor: '#2563eb',
                             backgroundColor: 'rgba(37, 99, 235, 0.15)',
-                            borderWidth: 3,
-                            pointRadius: 5,
+                            borderWidth: 4,
+                            pointRadius: 6,
                             pointBackgroundColor: '#2563eb',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
-                            pointHoverRadius: 8,
+                            pointHoverRadius: 10,
                             pointHoverBackgroundColor: '#ffffff',
                             pointHoverBorderColor: '#2563eb',
                             pointHoverBorderWidth: 3,
@@ -627,12 +653,12 @@
                             data: deploys,
                             borderColor: '#059669',
                             backgroundColor: 'rgba(5, 150, 105, 0.15)',
-                            borderWidth: 3,
-                            pointRadius: 5,
+                            borderWidth: 4,
+                            pointRadius: 6,
                             pointBackgroundColor: '#059669',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
-                            pointHoverRadius: 8,
+                            pointHoverRadius: 10,
                             pointHoverBackgroundColor: '#ffffff',
                             pointHoverBorderColor: '#059669',
                             pointHoverBorderWidth: 3,
@@ -644,12 +670,12 @@
                             data: pipelines,
                             borderColor: '#dc2626',
                             backgroundColor: 'rgba(220, 38, 38, 0.15)',
-                            borderWidth: 3,
-                            pointRadius: 5,
+                            borderWidth: 4,
+                            pointRadius: 6,
                             pointBackgroundColor: '#dc2626',
                             pointBorderColor: '#ffffff',
                             pointBorderWidth: 2,
-                            pointHoverRadius: 8,
+                            pointHoverRadius: 10,
                             pointHoverBackgroundColor: '#ffffff',
                             pointHoverBorderColor: '#dc2626',
                             pointHoverBorderWidth: 3,
@@ -666,12 +692,12 @@
                         align: 'center',
                         labels: {
                             fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
-                            fontSize: 14,
+                            fontSize: 16,
                             fontStyle: 'bold',
                             fontColor: '#000000',
-                            padding: 15,
+                            padding: 20,
                             usePointStyle: true,
-                            boxWidth: 10
+                            boxWidth: 12
                         }
                     },
                     scales: {
@@ -684,11 +710,11 @@
                             ticks: {
                                 fontColor: '#000000',
                                 fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
-                                fontSize: 13,
+                                fontSize: 16,
                                 fontStyle: 'bold',
                                 maxRotation: 0,
-                                autoSkipPadding: 25,
-                                padding: 10
+                                autoSkipPadding: 30,
+                                padding: 15
                             }
                         }],
                         yAxes: [{
@@ -701,10 +727,10 @@
                             ticks: {
                                 fontColor: '#000000',
                                 fontFamily: "'Helvetica Neue', 'Arial', sans-serif",
-                                fontSize: 13,
+                                fontSize: 16,
                                 fontStyle: 'bold',
                                 maxTicksLimit: 6,
-                                padding: 10,
+                                padding: 15,
                                 beginAtZero: true,
                                 autoSkip: true,
                                 callback: function(value) {
@@ -715,25 +741,25 @@
                     },
                     tooltips: {
                         enabled: true,
-                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)',
                         titleFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
-                        titleFontSize: 16,
+                        titleFontSize: 18,
                         titleFontStyle: 'bold',
                         titleFontColor: '#ffffff',
-                        titleMarginBottom: 10,
+                        titleMarginBottom: 12,
                         bodyFontFamily: "'Helvetica Neue', 'Arial', sans-serif",
-                        bodyFontSize: 14,
+                        bodyFontSize: 16,
                         bodyFontStyle: 'bold',
                         bodyFontColor: '#ffffff',
-                        bodySpacing: 6,
-                        xPadding: 15,
-                        yPadding: 15,
+                        bodySpacing: 8,
+                        xPadding: 18,
+                        yPadding: 18,
                         displayColors: true,
                         intersect: false,
                         mode: 'index',
-                        caretSize: 8,
-                        cornerRadius: 6,
-                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        caretSize: 10,
+                        cornerRadius: 8,
+                        borderColor: 'rgba(255, 255, 255, 0.3)',
                         borderWidth: 1,
                         callbacks: {
                             label: function(tooltipItem, data) {
