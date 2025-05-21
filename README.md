@@ -56,15 +56,8 @@ psql -d cmdb -f migrations/001_init_schema.sql
 go run cmd/server/main.go
 ```
 
-应用将在 http://localhost:8081 运行，默认管理员账号/密码：admin/admin123
+应用将在 http://localhost:8080 运行，默认管理员账号/密码：admin/admin123
 
-## 验证数据库连接
-
-可以使用内置的数据库验证工具:
-
-```bash
-go run scripts/db_setup.go
-```
 
 ## 项目结构
 

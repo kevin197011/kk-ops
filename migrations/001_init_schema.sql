@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS dashboard_stats (
 INSERT INTO users (username, password, email, role, created_at, updated_at)
 VALUES (
     'admin',
-    '$2a$10$qJMUDGQL8MQl69F7Sj/GOuzZRZPvPIl1vf1oKMOo.YhbBZsVqFcVq',
+    '$2a$10$GkqLnj8StDgj6ho7BHWS.u0P/H0QuZwWE81.85qawnVt0/Zv.Cebi',
     'admin@example.com',
     'admin',
     NOW(),
