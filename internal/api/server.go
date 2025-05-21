@@ -36,7 +36,7 @@ func ListServersHandler(c *gin.Context) {
 	role, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "servers.html", gin.H{
-		"title":      "服务器管理 - KK-OPS",
+		"title":      "服务器管理 - KK运维平台",
 		"servers":    servers,
 		"activeMenu": "servers",
 		"userID":     userID,
@@ -52,7 +52,7 @@ func GetServerHandler(c *gin.Context) {
 	log.Printf("GetServerHandler id: %d", id)
 	if err != nil {
 		c.HTML(http.StatusOK, "server_detail.html", gin.H{
-			"title":      "服务器详情 - KK-OPS",
+			"title":      "服务器详情 - KK运维平台",
 			"error":      "服务器ID无效",
 			"activeMenu": "servers",
 		})
@@ -62,7 +62,7 @@ func GetServerHandler(c *gin.Context) {
 	server, err := model.GetServerByID(id)
 	if err != nil {
 		c.HTML(http.StatusOK, "server_detail.html", gin.H{
-			"title":      "服务器详情 - KK-OPS",
+			"title":      "服务器详情 - KK运维平台",
 			"error":      "获取服务器详情失败: " + err.Error(),
 			"activeMenu": "servers",
 		})
@@ -75,7 +75,7 @@ func GetServerHandler(c *gin.Context) {
 	role, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "server_detail.html", gin.H{
-		"title":      "服务器详情 - KK-OPS",
+		"title":      "服务器详情 - KK运维平台",
 		"server":     server,
 		"activeMenu": "servers",
 		"userID":     userID,
@@ -94,7 +94,7 @@ func CreateServerHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "server_new.html", gin.H{
-			"title":      "添加服务器 - KK-OPS",
+			"title":      "添加服务器 - KK运维平台",
 			"activeMenu": "servers",
 			"userID":     userID,
 			"username":   username,
@@ -111,7 +111,7 @@ func CreateServerHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "server_new.html", gin.H{
-			"title":      "添加服务器 - KK-OPS",
+			"title":      "添加服务器 - KK运维平台",
 			"error":      "请填写所有必填字段",
 			"activeMenu": "servers",
 			"userID":     userID,
@@ -140,7 +140,7 @@ func CreateServerHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "server_new.html", gin.H{
-			"title":      "添加服务器 - KK-OPS",
+			"title":      "添加服务器 - KK运维平台",
 			"error":      "创建服务器失败: " + err.Error(),
 			"server":     server,
 			"activeMenu": "servers",

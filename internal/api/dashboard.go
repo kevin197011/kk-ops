@@ -82,7 +82,7 @@ func DashboardHandler(c *gin.Context) {
 	}
 
 	data := gin.H{
-		"title":      "仪表盘 - KK-OPS运维管理平台",
+		"title":      "仪表盘 - KK运维平台",
 		"userID":     userID,
 		"username":   username,
 		"role":       role,

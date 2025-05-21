@@ -31,7 +31,7 @@ func ListUsersHandler(c *gin.Context) {
 	role, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "users.html", gin.H{
-		"title":      "用户管理 - KK-OPS",
+		"title":      "用户管理 - KK运维平台",
 		"users":      users,
 		"activeMenu": "users",
 		"userID":     userID,
@@ -47,7 +47,7 @@ func GetUserHandler(c *gin.Context) {
 	log.Printf("GetUserHandler id: %d", id)
 	if err != nil {
 		c.HTML(http.StatusOK, "user_detail.html", gin.H{
-			"title":      "用户详情 - KK-OPS",
+			"title":      "用户详情 - KK运维平台",
 			"error":      "用户ID无效",
 			"activeMenu": "users",
 		})
@@ -57,7 +57,7 @@ func GetUserHandler(c *gin.Context) {
 	user, err := model.GetUserByID(id)
 	if err != nil {
 		c.HTML(http.StatusOK, "user_detail.html", gin.H{
-			"title":      "用户详情 - KK-OPS",
+			"title":      "用户详情 - KK运维平台",
 			"error":      "获取用户详情失败: " + err.Error(),
 			"activeMenu": "users",
 		})
@@ -70,7 +70,7 @@ func GetUserHandler(c *gin.Context) {
 	currentRole, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "user_detail.html", gin.H{
-		"title":      "用户详情 - KK-OPS",
+		"title":      "用户详情 - KK运维平台",
 		"user":       user,
 		"activeMenu": "users",
 		"userID":     currentUserID,
@@ -89,7 +89,7 @@ func CreateUserHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "user_new.html", gin.H{
-			"title":      "添加用户 - KK-OPS",
+			"title":      "添加用户 - KK运维平台",
 			"activeMenu": "users",
 			"userID":     userID,
 			"username":   username,
@@ -106,7 +106,7 @@ func CreateUserHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "user_new.html", gin.H{
-			"title":      "添加用户 - KK-OPS",
+			"title":      "添加用户 - KK运维平台",
 			"error":      "请填写所有必填字段",
 			"activeMenu": "users",
 			"userID":     userID,
@@ -125,7 +125,7 @@ func CreateUserHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "user_new.html", gin.H{
-			"title":      "添加用户 - KK-OPS",
+			"title":      "添加用户 - KK运维平台",
 			"error":      "用户名已存在",
 			"activeMenu": "users",
 			"userID":     userID,
@@ -149,7 +149,7 @@ func CreateUserHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "user_new.html", gin.H{
-			"title":      "添加用户 - KK-OPS",
+			"title":      "添加用户 - KK运维平台",
 			"error":      "创建用户失败: " + err.Error(),
 			"user":       user,
 			"activeMenu": "users",

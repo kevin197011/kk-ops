@@ -31,7 +31,7 @@ func IndexHandler(c *gin.Context) {
 // ShowLoginPage 显示登录页面
 func ShowLoginPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "login.html", gin.H{
-		"title": "登录 - KK-OPS运维管理平台",
+		"title": "登录 - KK运维平台",
 	})
 }
 
@@ -40,7 +40,7 @@ func LoginHandler(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBind(&req); err != nil {
 		c.HTML(http.StatusOK, "login.html", gin.H{
-			"title": "登录 - KK-OPS运维管理平台",
+			"title": "登录 - KK运维平台",
 			"error": "用户名和密码不能为空",
 		})
 		return
@@ -49,7 +49,7 @@ func LoginHandler(c *gin.Context) {
 	user, err := model.GetUserByUsername(req.Username)
 	if err != nil || !user.CheckPassword(req.Password) {
 		c.HTML(http.StatusOK, "login.html", gin.H{
-			"title": "登录 - KK-OPS运维管理平台",
+			"title": "登录 - KK运维平台",
 			"error": "用户名或密码错误",
 		})
 		return
@@ -59,7 +59,7 @@ func LoginHandler(c *gin.Context) {
 	token, err := middleware.GenerateToken(user.ID, user.Username, user.Role)
 	if err != nil {
 		c.HTML(http.StatusOK, "login.html", gin.H{
-			"title": "登录 - KK-OPS运维管理平台",
+			"title": "登录 - KK运维平台",
 			"error": "系统错误，请稍后再试",
 		})
 		return
@@ -80,7 +80,7 @@ func LoginHandler(c *gin.Context) {
 // ShowRegisterPage 显示注册页面
 func ShowRegisterPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "register.html", gin.H{
-		"title": "注册 - KK-OPS运维管理平台",
+		"title": "注册 - KK运维平台",
 	})
 }
 
@@ -89,7 +89,7 @@ func RegisterHandler(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBind(&req); err != nil {
 		c.HTML(http.StatusOK, "register.html", gin.H{
-			"title": "注册 - KK-OPS运维管理平台",
+			"title": "注册 - KK运维平台",
 			"error": "请填写所有必填字段",
 		})
 		return
@@ -99,7 +99,7 @@ func RegisterHandler(c *gin.Context) {
 	_, err := model.GetUserByUsername(req.Username)
 	if err == nil {
 		c.HTML(http.StatusOK, "register.html", gin.H{
-			"title": "注册 - KK-OPS运维管理平台",
+			"title": "注册 - KK运维平台",
 			"error": "用户名已存在",
 		})
 		return
@@ -115,7 +115,7 @@ func RegisterHandler(c *gin.Context) {
 
 	if err := model.CreateUser(user); err != nil {
 		c.HTML(http.StatusOK, "register.html", gin.H{
-			"title": "注册 - KK-OPS运维管理平台",
+			"title": "注册 - KK运维平台",
 			"error": "注册失败，请稍后再试",
 		})
 		return
@@ -125,7 +125,7 @@ func RegisterHandler(c *gin.Context) {
 	token, err := middleware.GenerateToken(user.ID, user.Username, user.Role)
 	if err != nil {
 		c.HTML(http.StatusOK, "register.html", gin.H{
-			"title": "注册 - KK-OPS运维管理平台",
+			"title": "注册 - KK运维平台",
 			"error": "系统错误，请稍后再试",
 		})
 		return

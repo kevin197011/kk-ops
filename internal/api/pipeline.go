@@ -35,7 +35,7 @@ func ListPipelinesHandler(c *gin.Context) {
 	role, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "pipelines.html", gin.H{
-		"title":      "CICD管理 - KK-OPS",
+		"title":      "CICD管理 - KK运维平台",
 		"pipelines":  pipelines,
 		"activeMenu": "cicd",
 		"userID":     userID,
@@ -51,7 +51,7 @@ func GetPipelineHandler(c *gin.Context) {
 	if err != nil {
 		log.Printf("Error converting idStr to int: %v", err)
 		c.HTML(http.StatusOK, "pipeline_detail.html", gin.H{
-			"title":      "流水线详情 - KK-OPS",
+			"title":      "流水线详情 - KK运维平台",
 			"error":      "流水线ID无效",
 			"activeMenu": "cicd",
 		})
@@ -62,7 +62,7 @@ func GetPipelineHandler(c *gin.Context) {
 	if err != nil {
 		log.Printf("Error getting pipeline by id: %v", err)
 		c.HTML(http.StatusOK, "pipeline_detail.html", gin.H{
-			"title":      "流水线详情 - KK-OPS",
+			"title":      "流水线详情 - KK运维平台",
 			"error":      "获取流水线详情失败: " + err.Error(),
 			"activeMenu": "cicd",
 		})
@@ -88,7 +88,7 @@ func GetPipelineHandler(c *gin.Context) {
 	role, _ := c.Get("role")
 
 	c.HTML(http.StatusOK, "pipeline_detail.html", gin.H{
-		"title":      "流水线详情 - KK-OPS",
+		"title":      "流水线详情 - KK运维平台",
 		"pipeline":   pipeline,
 		"runs":       runs,
 		"server":     server,
@@ -116,7 +116,7 @@ func CreatePipelineHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "pipeline_new.html", gin.H{
-			"title":      "添加流水线 - KK-OPS",
+			"title":      "添加流水线 - KK运维平台",
 			"servers":    servers,
 			"activeMenu": "cicd",
 			"userID":     userID,
@@ -141,7 +141,7 @@ func CreatePipelineHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "pipeline_new.html", gin.H{
-			"title":      "添加流水线 - KK-OPS",
+			"title":      "添加流水线 - KK运维平台",
 			"error":      "请填写所有必填字段",
 			"servers":    servers,
 			"activeMenu": "cicd",
@@ -177,7 +177,7 @@ func CreatePipelineHandler(c *gin.Context) {
 		role, _ := c.Get("role")
 
 		c.HTML(http.StatusOK, "pipeline_new.html", gin.H{
-			"title":      "添加流水线 - KK-OPS",
+			"title":      "添加流水线 - KK运维平台",
 			"error":      "创建流水线失败: " + err.Error(),
 			"pipeline":   pipeline,
 			"servers":    servers,

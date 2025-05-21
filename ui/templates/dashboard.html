@@ -6,6 +6,7 @@
     <title>{{ .title }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/css/tech-sidebar.css">
     <style>
         :root {
             --primary: #2563eb;
@@ -44,20 +45,93 @@
             overflow-x: hidden;
         }
 
-        .sidebar-brand {
-            background: var(--primary);
-            color: white;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            padding: 0 1rem;
-            font-weight: 600;
-            font-size: 1.125rem;
+        /* Note: sidebar-brand styles are now in tech-sidebar.css */
+
+
+            background: white;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            width: 260px;
+            padding-top: 0;
+            overflow-x: hidden;
         }
 
-        .sidebar-brand i {
-            margin-right: 0.75rem;
-            opacity: 0.9;
+
+        .sidebar-brand:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+        .sidebar-brand:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.8) 50%,
+                rgba(255,255,255,0) 100%);
+            animation: scanline 4s linear infinite;
+            z-index: 1;
+        }
+
+        /* Data nodes decoration */
+        .sidebar-brand:before {
+            content: '';
+            box-shadow:
+                0 0 5px #4fc3f7,
+                30px 20px 1px rgba(255,255,255,0.05),
+                80px 10px 2px rgba(255,255,255,0.05),
+                140px 30px 1px rgba(255,255,255,0.05),
+                200px 5px 2px rgba(255,255,255,0.05);
+        }
+
+
+        .sidebar-brand span {
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .sidebar-brand span:after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.6) 50%,
+                rgba(255,255,255,0) 100%);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes scanline {
+            0% { top: -10%; }
+            100% { top: 110%; }
         }
 
         .sidebar-content {
@@ -363,14 +437,92 @@
         .activity-legend-pipeline {
             border-color: #dc2626;
         }
+
+        .tech-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            z-index: 2;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .tech-highlight {
+            color: #4fc3f7;
+            font-weight: bold;
+            position: relative;
+            padding: 0 2px;
+        }
+
+        .tech-highlight:before {
+            content: "";
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: calc(100% + 10px);
+            height: 100%;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 3px;
+            z-index: -1;
+        }
+
+        /* Digital circuit pattern effect */
+        .tech-highlight:after {
+            content: "";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            width: 10px;
+            height: 1px;
+            background: rgba(79, 195, 247, 0.7);
+            box-shadow: 0 0 2px #4fc3f7;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.7);
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .version-tag {
+            font-size: 0.6rem;
+            vertical-align: super;
+            background: rgba(79, 195, 247, 0.2);
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-left: -2px;
+            font-weight: normal;
+            color: #81d4fa;
+            position: relative;
+            top: -1px;
+        }
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <i class="bi bi-hdd-network"></i>
-            <span>KK-OPS 运维平台</span>
+            <i class="bi bi-terminal-plus"></i>
+            <span>KK 运维平台</span>
         </div>
         <div class="sidebar-content">
             <ul class="nav flex-column">
