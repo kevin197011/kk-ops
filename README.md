@@ -14,22 +14,25 @@
 - 前端：Bootstrap
 - 后端：Golang + Gin框架
 - 数据库：PostgreSQL
+- 容器化：Docker + Docker Compose
 
 ## 开发环境准备
 
-### 1. 安装依赖
+### 方式一：本地开发
+
+#### 1. 安装依赖
 
 ```bash
 go mod tidy
 ```
 
-### 2. 配置数据库
+#### 2. 配置数据库
 
 - 创建PostgreSQL数据库
 - 创建配置文件
 
 ```bash
-cp .env.example .env
+cp env.example .env
 # 编辑.env文件，配置数据库连接信息
 ```
 
@@ -40,7 +43,7 @@ cp .env.example .env
 - 主机: localhost
 - 端口: 5432
 
-### 3. 执行数据库迁移
+#### 3. 执行数据库迁移
 
 ```bash
 # 创建数据库
@@ -50,21 +53,51 @@ createdb cmdb
 psql -d cmdb -f migrations/001_init_schema.sql
 ```
 
-## 启动应用
+#### 4. 启动应用
 
 ```bash
 go run cmd/server/main.go
 ```
 
-应用将在 http://localhost:8080 运行，默认管理员账号/密码：admin/admin123
+应用将在 http://localhost:8080 运行
 
+### 方式二：Docker 部署
+
+#### 1. 使用 Docker Compose 启动
+
+```bash
+# 构建并启动服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+```
+
+应用将在 http://localhost:8080 运行，PostgreSQL数据库会自动初始化
+
+## 数据初始化
+
+### 生成测试数据
+
+系统提供了测试数据生成工具，可以快速创建测试用户、服务器和流水线：
+
+```bash
+# 运行测试数据生成脚本
+go run cmd/mock/main.go
+```
+
+生成的测试数据包括：
+- 管理员用户（admin/admin123）和普通用户
+- 多种环境的测试服务器
+- 示例流水线及运行记录
 
 ## 项目结构
 
 ```
 kk-ops/
 ├── cmd/                   # 应用入口
-│   └── server/            # 服务器入口
+│   ├── server/            # 服务器入口
+│   └── mock/              # 测试数据生成工具
 ├── internal/              # 内部包
 │   ├── api/               # API控制器
 │   ├── middleware/        # 中间件
@@ -73,15 +106,33 @@ kk-ops/
 │   ├── config/            # 配置
 │   └── utils/             # 工具函数
 ├── ui/                    # 前端资源
-│   ├── css/               # CSS样式
-│   ├── js/                # JavaScript脚本
+│   ├── static/            # 静态资源
+│   │   ├── css/           # CSS样式
+│   │   └── js/            # JavaScript脚本
 │   └── templates/         # HTML模板
 ├── migrations/            # 数据库迁移脚本
 ├── scripts/               # 工具脚本
-├── .env.example           # 环境变量示例
+├── Dockerfile             # Docker镜像构建文件
+├── docker-compose.yml     # Docker Compose配置
+├── .dockerignore          # Docker忽略文件
+├── env.example            # 环境变量示例
 ├── go.mod                 # Go模块定义
 └── README.md              # 项目说明
 ```
+
+## Docker 环境变量
+
+Docker 环境中可配置的环境变量:
+
+| 变量名 | 描述 | 默认值 |
+|--------|------|--------|
+| SERVER_PORT | 应用服务端口 | 8080 |
+| DB_HOST | 数据库主机名 | db |
+| DB_PORT | 数据库端口 | 5432 |
+| DB_USER | 数据库用户名 | admin |
+| DB_PASSWORD | 数据库密码 | 123456 |
+| DB_NAME | 数据库名称 | cmdb |
+| JWT_SECRET | JWT密钥 | kk-ops-secure-jwt-token-2025 |
 
 ## 贡献指南
 

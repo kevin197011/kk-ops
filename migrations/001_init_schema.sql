@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS dashboard_stats (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
--- 插入默认管理员用户 (密码: admin123)
+-- 插入默认管理员用户 (密码: 123456)
 INSERT INTO users (username, password, email, role, created_at, updated_at)
 VALUES (
     'admin',
